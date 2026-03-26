@@ -1,11 +1,9 @@
-ingredient match game 
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Mastro's — Ingredient Match</title>
+<title>Mastro's — Build the Drink</title>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
 :root {
@@ -19,7 +17,6 @@ ingredient match game
   --muted: #887a60;
   --green: #4caf70;
   --red: #c95a4c;
-  --blue: #4c8fc9;
 }
 * { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -32,7 +29,6 @@ body {
   flex-direction: column;
   align-items: center;
   padding: 24px 16px 60px;
-  user-select: none;
 }
 
 .brand {
@@ -60,188 +56,369 @@ h1 {
   line-height: 1.8;
 }
 
-/* STATS BAR */
-.stats-bar {
-  display: flex;
-  gap: 20px;
-  font-size: 10px;
-  letter-spacing: 2px;
-  color: var(--muted);
-  text-transform: uppercase;
-  margin-bottom: 22px;
-  align-items: center;
-}
-.stats-bar b { color: var(--text); font-weight: 600; }
-.timer {
-  font-family: 'Cormorant Garamond', serif;
-  font-size: 22px;
-  color: var(--gold);
-  min-width: 48px;
-  text-align: center;
-}
-.timer.urgent { color: var(--red); animation: pulse 0.5s infinite alternate; }
-@keyframes pulse { from { opacity:1; } to { opacity:0.5; } }
-
-/* ROUND LABEL */
-.round-label {
+.section-label {
   font-size: 9px;
   letter-spacing: 3px;
   color: var(--muted);
   text-transform: uppercase;
   text-align: center;
-  margin-bottom: 14px;
+  margin-bottom: 8px;
+}
+.cat-row {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  justify-content: center;
+  max-width: 560px;
+  margin-bottom: 22px;
+}
+.cat-btn {
+  padding: 5px 11px;
+  border-radius: 2px;
+  font-size: 9px;
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+  cursor: pointer;
+  border: 1px solid rgba(255,255,255,0.1);
+  background: transparent;
+  color: var(--muted);
+  font-family: 'Montserrat', sans-serif;
+  transition: all 0.15s;
+}
+.cat-btn:hover { border-color: rgba(201,168,76,0.3); color: var(--text); }
+.cat-btn.active {
+  background: rgba(201,168,76,0.12);
+  color: var(--gold);
+  border-color: rgba(201,168,76,0.5);
 }
 
-/* GAME AREA */
-.game-area {
+.progress-wrap {
   width: 100%;
-  max-width: 600px;
-  display: flex;
-  gap: 14px;
-  align-items: flex-start;
+  max-width: 540px;
+  margin-bottom: 6px;
+  background: #222;
+  height: 2px;
+  border-radius: 2px;
+}
+.progress-fill {
+  height: 2px;
+  background: linear-gradient(90deg, var(--gold), var(--gold-light));
+  border-radius: 2px;
+  transition: width 0.4s ease;
+}
+.progress-label {
+  font-size: 10px;
+  letter-spacing: 2px;
+  color: var(--muted);
+  text-align: center;
+  text-transform: uppercase;
   margin-bottom: 18px;
 }
 
-/* COCKTAIL COLUMN */
-.cocktail-col {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-.cocktail-slot {
+.cocktail-card {
+  width: 100%;
+  max-width: 540px;
   background: var(--dark2);
   border: 1px solid rgba(201,168,76,0.2);
   border-radius: 3px;
-  padding: 14px 16px;
-  min-height: 70px;
-  transition: border-color 0.2s, background 0.2s;
-  position: relative;
+  padding: 20px 24px;
+  margin-bottom: 16px;
+  text-align: center;
 }
-.cocktail-slot.highlight {
-  border-color: var(--gold);
-  background: rgba(201,168,76,0.07);
-}
-.cocktail-slot.correct {
-  border-color: var(--green);
-  background: rgba(76,175,112,0.1);
-}
-.cocktail-slot.wrong {
-  border-color: var(--red);
-  background: rgba(201,90,76,0.1);
-  animation: shake 0.4s ease;
-}
-@keyframes shake {
-  0%,100%{transform:translateX(0)}
-  20%{transform:translateX(-6px)}
-  40%{transform:translateX(6px)}
-  60%{transform:translateX(-4px)}
-  80%{transform:translateX(4px)}
-}
-.cocktail-name {
-  font-family: 'Cormorant Garamond', serif;
-  font-size: 17px;
-  font-weight: 600;
-  line-height: 1.2;
-  margin-bottom: 4px;
-}
-.cocktail-cat {
-  font-size: 8px;
-  letter-spacing: 2px;
+.cocktail-cat-label {
+  font-size: 9px;
+  letter-spacing: 3px;
   color: var(--gold);
   text-transform: uppercase;
+  margin-bottom: 8px;
 }
-.matched-ingredient {
-  margin-top: 8px;
-  font-size: 11px;
-  color: var(--green);
-  line-height: 1.4;
+.cocktail-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 28px;
+  font-weight: 600;
+  margin-bottom: 10px;
+  line-height: 1.2;
 }
+.remaining-badge {
+  display: inline-block;
+  font-size: 9px;
+  letter-spacing: 2px;
+  color: var(--muted);
+  text-transform: uppercase;
+  border: 1px solid rgba(201,168,76,0.15);
+  border-radius: 20px;
+  padding: 3px 12px;
+}
+.remaining-badge span { color: var(--gold); font-weight: 600; }
 
-/* DIVIDER */
-.divider {
-  width: 1px;
-  background: rgba(201,168,76,0.1);
-  align-self: stretch;
-  margin: 4px 0;
-}
-
-/* INGREDIENT COLUMN */
-.ingredient-col {
-  flex: 1;
+.selected-tray {
+  width: 100%;
+  max-width: 540px;
+  min-height: 44px;
+  margin-bottom: 14px;
   display: flex;
-  flex-direction: column;
-  gap: 8px;
+  flex-wrap: wrap;
+  gap: 6px;
+  align-items: flex-start;
 }
-.ingr-chip {
-  background: var(--dark3);
-  border: 1px solid rgba(201,168,76,0.2);
+.tray-chip {
+  padding: 5px 12px;
   border-radius: 2px;
-  padding: 11px 14px;
-  font-size: 12px;
+  font-size: 11px;
   line-height: 1.4;
-  cursor: pointer;
-  transition: border-color 0.15s, background 0.15s, transform 0.15s, opacity 0.15s;
-  position: relative;
+  animation: popIn 0.2s ease;
 }
-.ingr-chip:hover:not(.used):not(.selected) {
-  border-color: rgba(201,168,76,0.5);
-  background: rgba(201,168,76,0.07);
-  transform: translateX(-2px);
+@keyframes popIn {
+  from { transform: scale(0.8); opacity: 0; }
+  to   { transform: scale(1);   opacity: 1; }
 }
-.ingr-chip.selected {
-  border-color: var(--gold);
-  background: rgba(201,168,76,0.15);
-  color: var(--gold);
-  transform: translateX(-3px);
-}
-.ingr-chip.used {
-  opacity: 0.2;
-  cursor: default;
-  pointer-events: none;
-}
-.ingr-chip.flash-correct {
-  border-color: var(--green);
-  background: rgba(76,175,112,0.2);
+.tray-chip.correct-chip {
+  background: rgba(76,175,112,0.15);
+  border: 1px solid rgba(76,175,112,0.4);
   color: #a0e8b0;
 }
-.ingr-chip.flash-wrong {
-  border-color: var(--red);
+.tray-chip.wrong-chip {
   background: rgba(201,90,76,0.15);
+  border: 1px solid rgba(201,90,76,0.4);
   color: #e8a0a0;
 }
 
-/* INSTRUCTION */
 .instruction {
   font-size: 10px;
   letter-spacing: 1.5px;
   color: var(--muted);
   text-transform: uppercase;
   text-align: center;
-  margin-bottom: 16px;
+  margin-bottom: 14px;
   min-height: 16px;
 }
-.instruction span { color: var(--gold); }
 
-/* PROGRESS DOTS */
-.dots-row {
+.chip-pool {
+  width: 100%;
+  max-width: 540px;
   display: flex;
-  gap: 6px;
+  flex-wrap: wrap;
+  gap: 8px;
   margin-bottom: 20px;
+  justify-content: center;
+}
+.pool-chip {
+  padding: 10px 16px;
+  border-radius: 2px;
+  border: 1px solid rgba(201,168,76,0.18);
+  background: var(--dark3);
+  color: var(--text);
+  font-family: 'Montserrat', sans-serif;
+  font-size: 12px;
+  line-height: 1.4;
+  cursor: pointer;
+  transition: border-color 0.15s, background 0.15s, transform 0.1s;
+  text-align: center;
+}
+.pool-chip:hover:not(.used) {
+  border-color: rgba(201,168,76,0.5);
+  background: rgba(201,168,76,0.07);
+  transform: translateY(-2px);
+}
+.pool-chip.flash-correct {
+  border-color: var(--green);
+  background: rgba(76,175,112,0.15);
+  color: #a0e8b0;
+  pointer-events: none;
+}
+.pool-chip.flash-wrong {
+  border-color: var(--red);
+  background: rgba(201,90,76,0.15);
+  color: #e8a0a0;
+  animation: shake 0.4s ease;
+  pointer-events: none;
+}
+.pool-chip.used {
+  opacity: 0.15;
+  pointer-events: none;
+  cursor: default;
+}
+@keyframes shake {
+  0%,100%{transform:translateX(0)}
+  20%{transform:translateX(-5px)}
+  40%{transform:translateX(5px)}
+  60%{transform:translateX(-3px)}
+  80%{transform:translateX(3px)}
+}
+
+.score-strip {
+  display: flex;
+  gap: 20px;
+  font-size: 10px;
+  letter-spacing: 2px;
+  color: var(--muted);
+  text-transform: uppercase;
+  margin-bottom: 20px;
+}
+.score-strip b { color: var(--text); font-weight: 600; }
+
+.btn-skip {
+  padding: 10px 28px;
+  border: 1px solid rgba(201,168,76,0.2);
+  border-radius: 2px;
+  background: transparent;
+  color: var(--muted);
+  font-family: 'Montserrat', sans-serif;
+  font-size: 10px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  cursor: pointer;
+  margin-bottom: 20px;
+  transition: all 0.15s;
+}
+.btn-skip:hover { border-color: rgba(201,168,76,0.4); color: var(--text); }
+
+/* COMPLETE */
+#completeScreen {
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  width: 100%;
+  max-width: 560px;
+}
+.big-pct {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 88px;
+  color: var(--gold);
+  line-height: 1;
+  margin-bottom: 4px;
+}
+#completeScreen h2 {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 28px;
+  font-weight: 400;
+  margin-bottom: 8px;
+}
+#completeScreen p {
+  color: var(--muted);
+  font-size: 12px;
+  letter-spacing: 1px;
+  line-height: 1.8;
+  margin-bottom: 28px;
+}
+.complete-btns {
+  display: flex;
+  gap: 10px;
   flex-wrap: wrap;
   justify-content: center;
-  max-width: 300px;
+  margin-bottom: 36px;
 }
-.dot {
-  width: 8px; height: 8px;
-  border-radius: 50%;
-  background: #333;
-  transition: background 0.3s;
+.btn-again {
+  padding: 14px 28px;
+  background: linear-gradient(135deg, var(--gold), var(--gold-light));
+  color: var(--dark);
+  border: none;
+  border-radius: 2px;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 11px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  font-weight: 600;
+  cursor: pointer;
 }
-.dot.done { background: var(--green); }
-.dot.current { background: var(--gold); }
+.btn-review {
+  padding: 14px 28px;
+  background: transparent;
+  color: var(--gold);
+  border: 1px solid rgba(201,168,76,0.4);
+  border-radius: 2px;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 11px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  font-weight: 600;
+  cursor: pointer;
+}
 
-/* FEEDBACK TOAST */
+/* REVIEW */
+#reviewSection {
+  display: none;
+  width: 100%;
+  max-width: 560px;
+  text-align: left;
+}
+.review-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 26px;
+  font-weight: 400;
+  text-align: center;
+  margin-bottom: 6px;
+}
+.review-sub {
+  font-size: 10px;
+  letter-spacing: 2px;
+  color: var(--muted);
+  text-transform: uppercase;
+  text-align: center;
+  margin-bottom: 24px;
+}
+.review-card {
+  background: var(--dark2);
+  border: 1px solid rgba(201,168,76,0.15);
+  border-radius: 3px;
+  padding: 18px 20px;
+  margin-bottom: 12px;
+}
+.review-card.perfect { border-color: rgba(76,175,112,0.3); }
+.review-card.missed  { border-color: rgba(201,90,76,0.25); }
+.review-cocktail-name {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 20px;
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+.review-cocktail-cat {
+  font-size: 8px;
+  letter-spacing: 3px;
+  color: var(--gold);
+  text-transform: uppercase;
+  margin-bottom: 12px;
+}
+.review-row {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  margin-bottom: 8px;
+  font-size: 11px;
+  line-height: 1.5;
+}
+.review-row:last-child { margin-bottom: 0; }
+.review-dot {
+  min-width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  margin-top: 4px;
+  flex-shrink: 0;
+}
+.review-dot.ok  { background: var(--green); }
+.review-dot.bad { background: var(--red); }
+.review-ingr { color: var(--text); }
+.review-status-ok  { color: #4caf70; font-size: 9px; letter-spacing: 1px; text-transform: uppercase; }
+.review-status-bad { color: #c95a4c; font-size: 9px; letter-spacing: 1px; text-transform: uppercase; }
+.review-wrong-picked { font-size: 10px; color: var(--muted); margin-top: 2px; }
+.btn-back-top {
+  display: block;
+  margin: 24px auto 0;
+  padding: 13px 32px;
+  background: linear-gradient(135deg, var(--gold), var(--gold-light));
+  color: var(--dark);
+  border: none;
+  border-radius: 2px;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 11px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+/* TOAST */
 .toast {
   position: fixed;
   top: 20px;
@@ -259,465 +436,330 @@ h1 {
   white-space: nowrap;
 }
 .toast.show { transform: translateX(-50%) translateY(0); }
-.toast.correct-toast { border-color: rgba(76,175,112,0.5); color: #a0e8b0; }
-.toast.wrong-toast { border-color: rgba(201,90,76,0.5); color: #e8a0a0; }
-
-/* SCORE SCREEN */
-#scoreScreen {
-  display: none;
-  flex-direction: column;
-  align-items: center;
-  text-align: center;
-  max-width: 420px;
-}
-.big-score {
-  font-family: 'Cormorant Garamond', serif;
-  font-size: 80px;
-  color: var(--gold);
-  line-height: 1;
-  margin-bottom: 4px;
-}
-.score-sub {
-  font-size: 12px;
-  color: var(--muted);
-  letter-spacing: 2px;
-  text-transform: uppercase;
-  margin-bottom: 6px;
-}
-#scoreScreen h2 {
-  font-family: 'Cormorant Garamond', serif;
-  font-size: 28px;
-  font-weight: 400;
-  margin-bottom: 8px;
-}
-#scoreScreen p {
-  color: var(--muted);
-  font-size: 12px;
-  letter-spacing: 1px;
-  line-height: 1.8;
-  margin-bottom: 24px;
-}
-.btn-play-again {
-  padding: 14px 36px;
-  background: linear-gradient(135deg, var(--gold), var(--gold-light));
-  color: var(--dark);
-  border: none;
-  border-radius: 2px;
-  font-family: 'Montserrat', sans-serif;
-  font-size: 11px;
-  letter-spacing: 3px;
-  text-transform: uppercase;
-  font-weight: 600;
-  cursor: pointer;
-}
-
-/* START SCREEN */
-#startScreen {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  text-align: center;
-  max-width: 420px;
-  gap: 14px;
-}
-.difficulty-row {
-  display: flex;
-  gap: 8px;
-  flex-wrap: wrap;
-  justify-content: center;
-}
-.diff-btn {
-  padding: 8px 18px;
-  border-radius: 2px;
-  font-size: 10px;
-  letter-spacing: 1.5px;
-  text-transform: uppercase;
-  cursor: pointer;
-  border: 1px solid rgba(201,168,76,0.2);
-  background: transparent;
-  color: var(--muted);
-  font-family: 'Montserrat', sans-serif;
-  transition: all 0.15s;
-}
-.diff-btn.active {
-  background: rgba(201,168,76,0.12);
-  color: var(--gold);
-  border-color: rgba(201,168,76,0.5);
-}
-.start-desc {
-  font-size: 11px;
-  color: var(--muted);
-  line-height: 1.8;
-  letter-spacing: 0.5px;
-}
-.btn-start {
-  padding: 14px 40px;
-  background: linear-gradient(135deg, var(--gold), var(--gold-light));
-  color: var(--dark);
-  border: none;
-  border-radius: 2px;
-  font-family: 'Montserrat', sans-serif;
-  font-size: 11px;
-  letter-spacing: 3px;
-  text-transform: uppercase;
-  font-weight: 600;
-  cursor: pointer;
-  margin-top: 6px;
-}
+.toast.t-correct { border-color: rgba(76,175,112,0.5); color: #a0e8b0; }
+.toast.t-wrong   { border-color: rgba(201,90,76,0.5);  color: #e8a0a0; }
+.toast.t-done    { border-color: rgba(201,168,76,0.5); color: var(--gold); }
 </style>
 </head>
 <body>
 
 <div class="brand">Mastro's Restaurants · 2026</div>
-<h1>Ingredient Match</h1>
-<div class="subtitle">Select an ingredient · then tap the cocktail it belongs to</div>
+<h1>Build the Drink</h1>
+<div class="subtitle">Tap every ingredient & garnish that belongs to the cocktail shown</div>
 
-<!-- START SCREEN -->
-<div id="startScreen">
-  <div class="start-desc">Each round shows 4 cocktails and a shuffled pool of ingredients — some belong, some are decoys. Match them all to advance!</div>
-  <div style="font-size:9px;letter-spacing:3px;color:var(--muted);text-transform:uppercase;">Difficulty</div>
-  <div class="difficulty-row">
-    <button class="diff-btn active" onclick="setDiff('easy')">Easy — 30s</button>
-    <button class="diff-btn" onclick="setDiff('medium')">Medium — 20s</button>
-    <button class="diff-btn" onclick="setDiff('hard')">Hard — 12s</button>
+<div class="section-label">Filter by Spirit</div>
+<div class="cat-row" id="catRow"></div>
+
+<div class="progress-wrap"><div class="progress-fill" id="prog"></div></div>
+<div class="progress-label" id="progLabel"></div>
+
+<div id="gameArea" style="width:100%;max-width:540px;display:flex;flex-direction:column;align-items:center;">
+  <div class="cocktail-card">
+    <div class="cocktail-cat-label" id="qCat"></div>
+    <div class="cocktail-title" id="qName"></div>
+    <div class="remaining-badge">Find <span id="remaining">—</span> more</div>
   </div>
-  <button class="btn-start" onclick="startGame()">Start Game</button>
+
+  <div class="selected-tray" id="selectedTray"></div>
+  <div class="instruction" id="instruction">Tap all ingredients &amp; garnish below</div>
+  <div class="chip-pool" id="chipPool"></div>
+
+  <div class="score-strip">
+    <span>✓ <b style="color:#4caf70" id="sCorrect">0</b></span>
+    <span>✗ <b style="color:#c95a4c" id="sWrong">0</b></span>
+    <span>Cocktail <b id="sCard">1</b> of <b id="sTotal">—</b></span>
+  </div>
+  <button class="btn-skip" onclick="skipCocktail()">Skip →</button>
 </div>
 
-<!-- GAME -->
-<div id="gameArea" style="display:none;width:100%;max-width:600px;display:none;flex-direction:column;align-items:center;">
-  <div class="stats-bar">
-    <span>Score <b id="scoreNum">0</b></span>
-    <div class="timer" id="timer">—</div>
-    <span>Round <b id="roundNum">1</b></span>
+<div id="completeScreen">
+  <div class="big-pct" id="bigPct"></div>
+  <h2 id="completeTitle"></h2>
+  <p id="completeMsg"></p>
+  <div class="complete-btns">
+    <button class="btn-again" onclick="restart()">Play Again</button>
+    <button class="btn-review" onclick="showReview()">Review Results</button>
   </div>
-  <div class="round-label" id="roundLabel"></div>
-  <div class="instruction" id="instruction">Select an ingredient to begin</div>
-  <div class="game-area">
-    <div class="cocktail-col" id="cocktailCol"></div>
-    <div class="divider"></div>
-    <div class="ingredient-col" id="ingrCol"></div>
-  </div>
-  <div class="dots-row" id="dotsRow"></div>
 </div>
 
-<!-- SCORE SCREEN -->
-<div id="scoreScreen">
-  <div class="big-score" id="bigScore"></div>
-  <div class="score-sub">Points</div>
-  <h2 id="scoreTitle"></h2>
-  <p id="scoreMsg"></p>
-  <button class="btn-play-again" onclick="backToStart()">Play Again</button>
+<div id="reviewSection">
+  <div class="review-title">Review</div>
+  <div class="review-sub">How you did on each cocktail</div>
+  <div id="reviewCards"></div>
+  <button class="btn-back-top" onclick="backToComplete()">← Back</button>
 </div>
 
-<!-- TOAST -->
 <div class="toast" id="toast"></div>
 
 <script>
 const CARDS = [
-  {cat:"Vodka",name:"Get Loose with Goose",ingredients:["5oz Grey Goose Vodka","Dirty Sue Olive Juice"]},
-  {cat:"Vodka",name:"Pomegranate Martini",ingredients:["3oz Ketel One Citroen Vodka","1.5oz Daily's Triple Sec","1oz Monin Pomegranate Syrup","2 dashes Regan's Orange Bitters"]},
-  {cat:"Vodka",name:"Dream Berry",ingredients:["3oz Cîroc Red Berry Vodka","2oz Daily's Triple Sec","Splash Monin Strawberry Purée"]},
-  {cat:"Vodka",name:"Tipsy Flamingo",ingredients:["2oz Grey Goose Vodka","1oz lemon juice","1.25oz REAL Prickly Pear Purée",".25oz Citrónge"]},
-  {cat:"Vodka",name:"Dr. Feel Good",ingredients:["2oz American Harvest Vodka","8 mint leaves",".5oz Monin Golden Turmeric Syrup",".75oz Combier Peche de Vigne"]},
-  {cat:"Vodka",name:"Spa Day",ingredients:["1.75oz Ketel One Botanical Cucumber & Mint Vodka","1.5oz Hendrick's Gin",".75oz Chareau Aloe Vera Liqueur"]},
-  {cat:"Gin",name:"Lavender Collins",ingredients:["1.5oz Amethyst Lavender Gin",".5oz Caravella Limoncello Originale",".75oz Monin Lavender Syrup"]},
-  {cat:"Gin",name:"Rhubarb Gimlet",ingredients:["2.5oz Botanist Gin","2.5oz Edinburgh Rhubarb & Ginger Liqueur","1oz lime juice"]},
-  {cat:"Gin",name:"Strawberry Rhubarb Gimlet",ingredients:["3.5oz Botanist Gin",".25oz Monin Strawberry Rhubarb Purée","6 dashes Fee Brothers Rhubarb Bitters"]},
-  {cat:"Gin",name:"Thyme is of the Essence",ingredients:["2oz Nolet's Gin",".5oz Italicus Rosolio Di Bergamotto","2 sticks of thyme"]},
-  {cat:"Tequila",name:"Mastro's Margarita",ingredients:["2.5oz Don Julio Reposado Tequila",".5oz Grand Marnier","1oz Daily's Triple Sec","1oz Daily's Sweet & Sour"]},
-  {cat:"Tequila",name:"Volcante",ingredients:["2oz Volcán Blanco Tequila",".5oz Tres Agaves Agave Nectar",".5oz lime juice"]},
-  {cat:"Tequila",name:"Call Me an Ube",ingredients:["2oz Casamigos Reposado Tequila",".25oz Monin Banana Purée",".25oz Monin Ube Syrup"]},
-  {cat:"Tequila",name:"Skinny Diablo",ingredients:["2.5oz Don Julio Blanco Tequila",".75oz Tres Agaves Agave Nectar","Splash Daily's Triple Sec"]},
-  {cat:"Tequila",name:"Watermelon Fiesta",ingredients:["2oz Patrón Reposado Tequila",".75oz Monin Watermelon Syrup","2 dashes Scrappy's Fire Water Tincture"]},
-  {cat:"Mezcal",name:"Smoke & Mirrors",ingredients:["2oz Ilegal Reposado Mezcal",".5oz Ancho Reyes Verde",".75oz Tres Agaves Agave Nectar"]},
-  {cat:"Rum",name:"Mastro's Mojito",ingredients:["2.5oz Bacardí Limón Rum",".5oz Daily's Simple Syrup","12 mint leaves"]},
-  {cat:"Rum",name:"Tiki Time",ingredients:["1.5oz Don Q 7yr Reserva Rum","1.5oz Bacardí Limón Rum","1oz Aperol",".5oz Monin Banana Purée"]},
-  {cat:"Rum",name:"Hemingway Gold",ingredients:["2oz Don Q 7 Year Rum",".25oz Luxardo Maraschino Liqueur","1oz lime juice"]},
-  {cat:"Rum",name:"Ron Burgundy",ingredients:["1.5oz Ron Zacapa No.23 Rum",".75oz Aperol",".75oz Giffard Banane du Brésil","2 dashes Bitterman's Xocolatl Mole Bitters"]},
-  {cat:"Whiskey",name:"Mastro's Manhattan",ingredients:["1.5oz Woodford Reserve Bourbon","1.5oz Amaro Montenegro","1.5oz Vya Sweet","3 dashes Angostura Bitters"]},
-  {cat:"Whiskey",name:"Monkey Business",ingredients:["2.5oz Nikka Coffey Grain Whisky",".75oz Monin Banana Purée",".75oz Dole Pineapple Juice"]},
-  {cat:"Whiskey",name:"Fire & Mango",ingredients:["2oz Jameson Black Barrel Whiskey",".5oz Aperol",".5oz Monin Mango Purée","2 dashes Scrappy Firewater Tincture"]},
-  {cat:"Whiskey",name:"Jet Setter",ingredients:["1oz Wild Turkey Longbranch Bourbon","1oz Meletti Amaro","1oz Aperol"]},
-  {cat:"Scotch",name:"Penicillin",ingredients:["2oz Glenlivet 12 yr. Scotch",".5oz Liber & Co. Fiery Ginger Syrup",".25oz Honey Water"]},
-  {cat:"Rye",name:"Sazerac",ingredients:["2.5oz Sazerac 6yr Rye Whiskey","6 dashes Peychaud's Bitters",".5oz Daily's Simple Syrup"]},
-  {cat:"Rye",name:"Grounds for Divorce",ingredients:["2oz Gentleman Jack Whiskey","1oz Liquid Alchemist Apple Spice Syrup","3 dashes Regan's Orange Bitters"]},
-  {cat:"Cognac",name:"Hennessy Sidecar",ingredients:["2.5oz Hennessy VS Cognac","1.5oz Cointreau","1oz Daily's Sweet & Sour"]},
-  {cat:"Sparkling",name:"French 77",ingredients:["1oz Gray Whale Gin",".75oz St-Germain Elderflower",".5oz lemon juice"]},
-  {cat:"Dessert",name:"Did D'USSÉ Bananas",ingredients:["1.5oz D'USSÉ VSOP","1.5oz Screwball Peanut Butter Whiskey","1oz Monin Banana Purée"]},
-  {cat:"Dessert",name:"Espresso Martini",ingredients:["2oz Three Olives Vanilla Vodka","1oz Kahlúa","1oz Tia Maria","Fresh espresso"]},
-  {cat:"Dessert",name:"Key Lime Pie Martini",ingredients:["2oz Absolut Lime Vodka","2.5oz Licor 43","Splash Dole Pineapple Juice"]},
-  {cat:"Dessert",name:"White Chocolate Martini",ingredients:["1.5oz Three Olives Vanilla Vodka","1.5oz O'Reilly's White Chocolate Country Cream Liqueur","1.5oz Dorda Double Chocolate Liqueur"]},
-  {cat:"Signature",name:"Mastro's Lemon Drop",ingredients:["3oz Lemon Infused Vodka","1oz Daily's Triple Sec","1 white sugar packet"]},
-  {cat:"Signature",name:"Mastro's Cosmopolitan",ingredients:["3oz Orange Infused Vodka","Heavy splash cranberry juice"]},
-  {cat:"Signature",name:"Mastro's Appletini",ingredients:["2oz Infusion Vodka (unmarked bottle)","2oz Dekuyper Sour Apple Pucker","Splash Sprite"]},
-  {cat:"Signature",name:"Salted Caramel Martini",ingredients:["1oz Belvedere Organic Vodka","3oz Dorda Sea Salt Caramel Liquer","1oz Tuaca"]},
-  {cat:"Still Spec",name:"Trial & Error",ingredients:["8 rosemary needles","2oz Crystal Head Vodka","1oz Giffard Banane du Brésil","1oz Liber & Co Pineapple Gum Syrup"]},
-  {cat:"Still Spec",name:"Purple Mist",ingredients:["2oz Grey Goose Le Citron Vodka","1oz Monin Ube Syrup","1oz Collet Brut Rosé Champagne"]},
-  {cat:"Still Spec",name:"Elyxir 27 Sangria",ingredients:["1oz Absolut Elyx","1oz Fonseca Bin 27 Port",".5oz St-Germain Elderflower Liqueur"]},
-  {cat:"Still Spec",name:"South of France",ingredients:[".5oz Combier Liqueur de Pamplemousse",".5oz Citrónge","4.5oz Charles Heidsieck Brut Réserve Champagne"]},
-  {cat:"Still Spec",name:"Perfect Pear-ing",ingredients:["2oz Botanist Gin","1oz Italicus Rosolio Di Bergamotto","1oz REAL Prickly Pear Purée"]},
+  {cat:"Vodka",name:"Get Loose with Goose",ingredients:["5oz Grey Goose Vodka","Available dirty w/ Dirty Sue Olive Juice"],garnish:"3 Spanish Olives OR Blue Cheese Olives OR 3 Caper Berries"},
+  {cat:"Vodka",name:"Pomegranate Martini",ingredients:["3oz Ketel One Citroen Vodka","1.5oz Daily's Triple Sec","1oz Monin Pomegranate Syrup","½ lemon squeeze & drop in","2 dashes Regan's Orange Bitters"],garnish:"5 freeze dried pomegranate seeds"},
+  {cat:"Vodka",name:"Dream Berry",ingredients:["3oz Cîroc Red Berry Vodka","2oz Daily's Triple Sec","Splash Daily's Sweet & Sour","Splash Monin Strawberry Purée","½ lemon squeeze & drop in"],garnish:"Sugar rim, 1 strawberry"},
+  {cat:"Vodka",name:"Tipsy Flamingo",ingredients:["2oz Grey Goose Vodka","1oz lemon juice","1.25oz REAL Prickly Pear Purée",".25oz Citrónge"],garnish:"Flamingo pick with lime wheel"},
+  {cat:"Vodka",name:"Dr. Feel Good",ingredients:["2oz American Harvest Vodka","8 mint leaves",".5oz Monin Golden Turmeric Syrup",".75oz Combier Peche de Vigne",".5oz lemon juice"],garnish:"Bamboo pick w/ candied ginger & mint sprig"},
+  {cat:"Vodka",name:"Spa Day",ingredients:["1.75oz Ketel One Botanical Cucumber & Mint Vodka","1.5oz Hendrick's Gin",".75oz Chareau Aloe Vera Liqueur",".5oz lime juice",".5oz Daily's Simple Syrup"],garnish:"1 cucumber slit on rim"},
+  {cat:"Gin",name:"Lavender Collins",ingredients:["1.5oz Amethyst Lavender Gin",".5oz Caravella Limoncello Originale",".75oz Monin Lavender Syrup",".5oz lemon juice"],garnish:"1 blackberry, lemon zest"},
+  {cat:"Gin",name:"Rhubarb Gimlet (AZ)",ingredients:["2.5oz Botanist Gin","2.5oz Edinburgh Rhubarb & Ginger Liqueur","1oz lime juice"],garnish:"Lime zest"},
+  {cat:"Gin",name:"Strawberry Rhubarb Gimlet",ingredients:["3.5oz Botanist Gin",".25oz Monin Strawberry Rhubarb Purée",".25oz Daily's Simple Syrup","1oz lime juice","6 dashes Fee Brothers Rhubarb Bitters"],garnish:"Lime wheel slit on edge & placed on rim"},
+  {cat:"Gin",name:"Thyme is of the Essence",ingredients:["2oz Nolet's Gin",".5oz Italicus Rosolio Di Bergamotto",".25oz Daily's Simple Syrup",".5oz lime juice","2 sticks of thyme"],garnish:"Dried grapefruit wheel & 3 thyme sticks"},
+  {cat:"Tequila",name:"Mastro's Margarita",ingredients:["2.5oz Don Julio Reposado Tequila",".5oz Grand Marnier","1oz Daily's Triple Sec","1oz Daily's Sweet & Sour","½ lime squeeze & drop in"],garnish:"Maldon sea salt rim, lime wedge"},
+  {cat:"Tequila",name:"Volcante",ingredients:["2oz Volcán Blanco Tequila",".5oz Tres Agaves Agave Nectar",".5oz lime juice"],garnish:"Tajin & Maldon Sea salt rim (3:1), 1 floating cucumber"},
+  {cat:"Tequila",name:"Call Me an Ube",ingredients:["2oz Casamigos Reposado Tequila","1oz Dole pineapple juice",".5oz lemon juice",".5oz lime juice",".25oz Monin Banana Purée",".25oz Monin Ube Syrup"],garnish:"Dried pineapple with rind"},
+  {cat:"Tequila",name:"Skinny Diablo",ingredients:["2.5oz Don Julio Blanco Tequila",".75oz Tres Agaves Agave Nectar","Splash Daily's Triple Sec"],garnish:"None (jalapeño + bell pepper in glass)"},
+  {cat:"Tequila",name:"Watermelon Fiesta",ingredients:["2oz Patrón Reposado Tequila",".75oz Monin Watermelon Syrup",".5oz lemon juice",".5oz lime juice",".25oz Tres Agaves Agave Nectar","2 dashes Scrappy's Fire Water Tincture"],garnish:"Tajin & Maldon Sea salt rim, 1 deseeded jalapeño slice"},
+  {cat:"Mezcal",name:"Smoke & Mirrors",ingredients:["2oz Ilegal Reposado Mezcal",".5oz Ancho Reyes Verde",".75oz Tres Agaves Agave Nectar","1oz lime juice"],garnish:"Light dusting of smoked paprika, 6–8 chili threads"},
+  {cat:"Rum",name:"Mastro's Mojito",ingredients:["2.5oz Bacardí Limón Rum",".5oz Daily's Simple Syrup"],garnish:"Lime wedge"},
+  {cat:"Rum",name:"Tiki Time",ingredients:["1.5oz Don Q 7yr Reserva Rum","1.5oz Bacardí Limón Rum","1oz Aperol",".5oz Monin Banana Purée",".25oz Monin Mango Purée",".5oz Dole Pineapple Juice"],garnish:"Luxardo cherry & dried orange wheel"},
+  {cat:"Rum",name:"Hemingway Gold",ingredients:["2oz Don Q 7 Year Rum",".25oz Luxardo Maraschino Liqueur",".75oz Daily's Simple Syrup","1oz lime juice"],garnish:"Edible flower"},
+  {cat:"Rum",name:"Ron Burgundy",ingredients:["1.5oz Ron Zacapa No.23 Rum",".75oz Aperol",".75oz Giffard Banane du Brésil",".25oz Daily's Simple Syrup","2 dashes Bitterman's Xocolatl Mole Bitters"],garnish:"None"},
+  {cat:"Whiskey/Bourbon",name:"Mastro's Manhattan",ingredients:["1.5oz Woodford Reserve Bourbon","1.5oz Amaro Montenegro","1.5oz Vya Sweet","3 dashes Angostura Bitters"],garnish:"3 Luxardo cherries on a pick"},
+  {cat:"Whiskey/Bourbon",name:"Monkey Business",ingredients:["2.5oz Nikka Coffey Grain Whisky",".75oz Monin Banana Purée",".75oz Dole Pineapple Juice",".5oz lemon juice"],garnish:"1 Luxardo cherry"},
+  {cat:"Whiskey/Bourbon",name:"Fire & Mango",ingredients:["2oz Jameson Black Barrel Whiskey",".5oz Aperol",".5oz Monin Mango Purée",".5oz lemon juice","2 dashes Scrappy Firewater Tincture"],garnish:"Tajin & Maldon Sea Salt rim"},
+  {cat:"Whiskey/Bourbon",name:"Jet Setter",ingredients:["1oz Wild Turkey Longbranch Bourbon","1oz Meletti Amaro","1oz Aperol",".5oz lemon juice"],garnish:"Lemon zest"},
+  {cat:"Scotch",name:"Penicillin",ingredients:["2oz Glenlivet 12 yr. Scotch",".5oz Liber & Co. Fiery Ginger Syrup",".25oz Honey Water (equal parts honey & hot water)",".5oz lemon juice"],garnish:"Candied ginger"},
+  {cat:"Rye Whiskey",name:"Sazerac",ingredients:["2.5oz Sazerac 6yr Rye Whiskey",".5oz Daily's Simple Syrup","6 dashes Peychaud's Bitters"],garnish:"Lemon zest"},
+  {cat:"Rye Whiskey",name:"Grounds for Divorce",ingredients:["2oz Gentleman Jack Whiskey","1oz Liquid Alchemist Apple Spice Syrup",".5oz lemon juice","3 dashes Regan's Orange Bitters"],garnish:"Gold Dusted Apple Chip (gold side up)"},
+  {cat:"Cognac",name:"Hennessy Sidecar",ingredients:["2.5oz Hennessy VS Cognac","1.5oz Cointreau","1oz Daily's Sweet & Sour","1 lime wedge squeeze & drop in"],garnish:"Sugar rim, lime wedge"},
+  {cat:"Sparkling",name:"French 77",ingredients:["1oz Gray Whale Gin",".75oz St-Germain Elderflower",".5oz lemon juice"],garnish:"Lemon zest"},
+  {cat:"Dessert",name:"Did D'USSÉ Bananas",ingredients:["1.5oz D'USSÉ VSOP","1.5oz Screwball Peanut Butter Whiskey","1oz Monin Banana Purée",".5oz Monin Sea Salt Caramel Toffee Sauce","Dollop of Reddi Wip"],garnish:"Caramel drizzle + Reddi Wip + Wild Thai Bananas"},
+  {cat:"Dessert",name:"Espresso Martini",ingredients:["2oz Three Olives Vanilla Vodka","1oz Kahlúa","1oz Tia Maria","Fresh espresso (single shot)"],garnish:"3 espresso beans"},
+  {cat:"Dessert",name:"Key Lime Pie Martini",ingredients:["2oz Absolut Lime Vodka","2.5oz Licor 43","Splash Daily's Sweet & Sour","Splash Dole Pineapple Juice","1 lime wedge squeeze","Splash Reddi Wip"],garnish:"Graham cracker rim, lime wedge"},
+  {cat:"Dessert",name:"White Chocolate Martini",ingredients:["1.5oz Three Olives Vanilla Vodka","1.5oz O'Reilly's White Chocolate Country Cream Liqueur","1.5oz Dorda Double Chocolate Liqueur","Splash Reddi Wip"],garnish:"Large chocolate covered strawberry"},
+  {cat:"Signature Martini",name:"Mastro's Lemon Drop",ingredients:["3oz Lemon Infused Vodka","1oz Daily's Triple Sec","Splash Daily's Sweet & Sour + Sprite","1 white sugar packet","½ lemon squeeze & drop in"],garnish:"Lemon sugar rim, lemon wedge, dry ice"},
+  {cat:"Signature Martini",name:"Mastro's Cosmopolitan",ingredients:["3oz Orange Infused Vodka","1oz Daily's Triple Sec","Heavy splash cranberry juice"],garnish:"Orange slice, dry ice"},
+  {cat:"Signature Martini",name:"Mastro's Appletini",ingredients:["2oz Infusion Vodka (unmarked bottle)","2oz Dekuyper Sour Apple Pucker","Splash Daily's Sweet & Sour","Splash Sprite"],garnish:"1 Luxardo cherry, dry ice"},
+  {cat:"Signature Martini",name:"Salted Caramel Martini",ingredients:["1oz Belvedere Organic Vodka","3oz Dorda Sea Salt Caramel Liquer","1oz Tuaca"],garnish:"Maldon Sea salt rim"},
+  {cat:"Non-Alcoholic",name:"Après Spritz",ingredients:["2oz Lyre's Italian Spritz","2oz Lyre's Classico Sparkling"],garnish:"Grapefruit zest"},
+  {cat:"Non-Alcoholic",name:"Prickly Pear Margarita (NA)",ingredients:["2.5oz Lyre's Agave Blanco Spirit","1oz REAL Prickly Pear Purée",".5oz lemon juice",".5oz lime juice"],garnish:"Maldon Sea salt rim, lime wheel on rim"},
+  {cat:"Non-Alcoholic",name:"No Side Sipping",ingredients:["2oz Lyre's Dry London Gin","2oz With CO Cocktails – Ginger Mule"],garnish:"Bamboo pick w/ candied ginger & mint sprig"},
+  {cat:"Non-Alcoholic",name:"You Mango Me Hot!",ingredients:["2oz Lyre's Agave Blanco Spirit","1oz Monin Mango Purée","1oz lime juice","2 dashes Scrappy's Firewater Tincture"],garnish:"Tajin/Maldon Sea Salt rim, lime wheel & chili threads"},
+  {cat:"Non-Alcoholic",name:"NA Mimosa",ingredients:["5oz Lyre's Classico Sparkling","1oz Perricone orange juice"],garnish:"Orange slice"},
+  {cat:"Non-Alcoholic",name:"NA Bellini",ingredients:["5oz Lyre's Classico Sparkling",".5oz Monin Peach Purée"],garnish:"Strawberry"},
+  {cat:"Still Spec",name:"Trial & Error",ingredients:["8 rosemary needles","2oz Crystal Head Vodka","1oz Giffard Banane du Brésil","1oz Liber & Co Pineapple Gum Syrup","1oz lemon juice"],garnish:"Long sprig of rosemary"},
+  {cat:"Still Spec",name:"Purple Mist",ingredients:["2oz Grey Goose Le Citron Vodka","1oz Monin Ube Syrup",".5oz lemon juice","1oz Collet Brut Rosé Champagne"],garnish:"Edible flower"},
+  {cat:"Still Spec",name:"Elyxir 27 Sangria",ingredients:["1oz Absolut Elyx","1oz Fonseca Bin 27 Port",".5oz St-Germain Elderflower Liqueur",".5oz Daily's Simple Syrup",".5oz lemon juice"],garnish:"Dried orange wheel"},
+  {cat:"Still Spec",name:"South of France",ingredients:[".5oz Combier Liqueur de Pamplemousse",".5oz Citrónge",".25oz Daily's Simple Syrup"],garnish:"Grapefruit zest"},
+  {cat:"Still Spec",name:"Perfect Pear-ing",ingredients:["2oz Botanist Gin","1oz Italicus Rosolio Di Bergamotto","1oz REAL Prickly Pear Purée","1oz lemon juice"],garnish:"Sage"},
 ];
-
-// ── Config ──
-const ROUNDS_TOTAL = 8;
-const COCKTAILS_PER_ROUND = 4;
-const INGR_PER_COCKTAIL = 2; // how many ingredients shown per cocktail
-const DECOYS_PER_ROUND = 3;  // extra wrong ingredients
-
-const DIFF_TIMES = { easy: 30, medium: 20, hard: 12 };
-let difficulty = 'easy';
-let timeLimit = 30;
-
-// ── Game State ──
-let score = 0, round = 0, timerVal = 0, timerInterval = null;
-let roundCocktails = [], ingrPool = [];
-let selectedIngr = null;
-let matchMap = {}; // ingrText -> cocktailName
-let matchedSlots = {}; // cocktailName -> [matched ingrs]
-let wrongStreak = 0;
-
-function setDiff(d) {
-  difficulty = d;
-  timeLimit = DIFF_TIMES[d];
-  document.querySelectorAll('.diff-btn').forEach(b => b.classList.toggle('active', b.textContent.toLowerCase().includes(d)));
-}
 
 function shuffle(arr) {
   const a = [...arr];
-  for (let i = a.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [a[i], a[j]] = [a[j], a[i]];
+  for (let i = a.length-1; i>0; i--) {
+    const j = Math.floor(Math.random()*(i+1));
+    [a[i],a[j]]=[a[j],a[i]];
   }
   return a;
 }
+function chipId(text) {
+  return 'chip-' + btoa(encodeURIComponent(text)).replace(/[^a-zA-Z0-9]/g,'').slice(0,24);
+}
 
-function startGame() {
-  document.getElementById('startScreen').style.display = 'none';
-  document.getElementById('scoreScreen').style.display = 'none';
+let selectedCat = 'All';
+let deck = [], idx = 0;
+let totalCorrect = 0, totalWrong = 0;
+let currentTargets = [], foundSoFar = [], wrongPickedThisCard = [];
+let reviewData = [];
+let cardDone = false;
+
+const CATS = ['All', ...[...new Set(CARDS.map(c => c.cat))]];
+const catRow = document.getElementById('catRow');
+CATS.forEach(cat => {
+  const btn = document.createElement('button');
+  btn.className = 'cat-btn' + (cat==='All' ? ' active' : '');
+  btn.textContent = cat;
+  btn.onclick = () => setCat(cat);
+  catRow.appendChild(btn);
+});
+
+function setCat(cat) {
+  selectedCat = cat;
+  document.querySelectorAll('.cat-btn').forEach(b => b.classList.toggle('active', b.textContent===cat));
+  restart();
+}
+function getPool() {
+  return selectedCat==='All' ? CARDS : CARDS.filter(c => c.cat===selectedCat);
+}
+
+function restart() {
+  deck = shuffle(getPool());
+  idx = 0; totalCorrect = 0; totalWrong = 0; reviewData = [];
+  document.getElementById('completeScreen').style.display = 'none';
+  document.getElementById('reviewSection').style.display = 'none';
   document.getElementById('gameArea').style.display = 'flex';
-  score = 0; round = 0;
-  document.getElementById('scoreNum').textContent = '0';
-  nextRound();
+  document.getElementById('sTotal').textContent = deck.length;
+  loadCard();
 }
 
-function nextRound() {
-  round++;
-  if (round > ROUNDS_TOTAL) { endGame(); return; }
+function loadCard() {
+  if (idx >= deck.length) { showComplete(); return; }
+  const card = deck[idx];
+  foundSoFar = []; wrongPickedThisCard = []; cardDone = false;
+  currentTargets = [...card.ingredients, card.garnish];
 
-  clearInterval(timerInterval);
-  selectedIngr = null;
-  matchMap = {};
-  matchedSlots = {};
+  // Decoys from other cards
+  const decoys = shuffle(
+    CARDS.filter(c => c.name !== card.name)
+      .flatMap(c => [...c.ingredients, c.garnish])
+      .filter(i => !currentTargets.includes(i))
+  ).slice(0, Math.max(10, currentTargets.length * 2));
 
-  // Pick 4 unique cocktails
-  roundCocktails = shuffle(CARDS).slice(0, COCKTAILS_PER_ROUND);
-  roundCocktails.forEach(c => { matchedSlots[c.name] = []; });
+  const poolItems = shuffle([...currentTargets, ...decoys]);
 
-  // Build ingredient pool: INGR_PER_COCKTAIL real ones per cocktail
-  const realIngrs = [];
-  roundCocktails.forEach(c => {
-    const picked = shuffle(c.ingredients).slice(0, INGR_PER_COCKTAIL);
-    picked.forEach(i => {
-      realIngrs.push({ text: i, cocktail: c.name });
-      matchMap[i] = c.name;
-    });
-  });
+  document.getElementById('qCat').textContent = card.cat;
+  document.getElementById('qName').textContent = card.name;
+  updateRemaining();
+  document.getElementById('selectedTray').innerHTML = '';
+  document.getElementById('instruction').innerHTML = 'Tap all ingredients &amp; garnish below';
 
-  // Decoys: ingredients from OTHER cocktails not in round
-  const otherCards = CARDS.filter(c => !roundCocktails.find(rc => rc.name === c.name));
-  const decoyPool = shuffle(otherCards.flatMap(c => c.ingredients));
-  // make sure decoys aren't accidentally also in a round cocktail's ingredients
-  const roundIngrTexts = new Set(realIngrs.map(r => r.text));
-  const decoys = decoyPool.filter(d => !roundIngrTexts.has(d)).slice(0, DECOYS_PER_ROUND);
-
-  ingrPool = shuffle([...realIngrs.map(r => r.text), ...decoys]);
-
-  // Render
-  renderRound();
-  startTimer();
-}
-
-function renderRound() {
-  document.getElementById('roundNum').textContent = round;
-  document.getElementById('roundLabel').textContent = `Round ${round} of ${ROUNDS_TOTAL}`;
-  document.getElementById('instruction').innerHTML = 'Select an ingredient to begin';
-
-  // Dots
-  const dots = document.getElementById('dotsRow');
-  dots.innerHTML = '';
-  for (let i = 1; i <= ROUNDS_TOTAL; i++) {
-    const d = document.createElement('div');
-    d.className = 'dot' + (i < round ? ' done' : i === round ? ' current' : '');
-    dots.appendChild(d);
-  }
-
-  // Cocktail slots
-  const col = document.getElementById('cocktailCol');
-  col.innerHTML = '';
-  roundCocktails.forEach(c => {
-    const slot = document.createElement('div');
-    slot.className = 'cocktail-slot';
-    slot.id = 'slot-' + c.name;
-    slot.innerHTML = `<div class="cocktail-cat">${c.cat}</div><div class="cocktail-name">${c.name}</div><div class="matched-ingredient" id="matched-${c.name}"></div>`;
-    slot.onclick = () => onCocktailClick(c.name);
-    col.appendChild(slot);
-  });
-
-  // Ingredient chips
-  const ingrCol = document.getElementById('ingrCol');
-  ingrCol.innerHTML = '';
-  ingrPool.forEach(ingr => {
+  const pool = document.getElementById('chipPool');
+  pool.innerHTML = '';
+  poolItems.forEach(item => {
     const chip = document.createElement('div');
-    chip.className = 'ingr-chip';
-    chip.id = 'chip-' + btoa(encodeURIComponent(ingr)).replace(/=/g,'');
-    chip.textContent = ingr;
-    chip.onclick = () => onIngrClick(ingr, chip);
-    ingrCol.appendChild(chip);
+    chip.className = 'pool-chip';
+    chip.id = chipId(item);
+    chip.textContent = item;
+    chip.onclick = () => onChipClick(item, chip, card);
+    pool.appendChild(chip);
+  });
+
+  document.getElementById('prog').style.width = (idx / deck.length * 100) + '%';
+  document.getElementById('progLabel').textContent = `${idx+1} of ${deck.length}`;
+  document.getElementById('sCard').textContent = idx+1;
+  document.getElementById('sCorrect').textContent = totalCorrect;
+  document.getElementById('sWrong').textContent = totalWrong;
+}
+
+function updateRemaining() {
+  document.getElementById('remaining').textContent = currentTargets.length - foundSoFar.length;
+}
+
+function onChipClick(item, chip, card) {
+  if (cardDone) return;
+  const isCorrect = currentTargets.includes(item) && !foundSoFar.includes(item);
+
+  if (isCorrect) {
+    foundSoFar.push(item);
+    totalCorrect++;
+    chip.classList.add('flash-correct');
+    setTimeout(() => chip.classList.add('used'), 350);
+    addTrayChip(item, true);
+    updateRemaining();
+    document.getElementById('sCorrect').textContent = totalCorrect;
+    if (foundSoFar.length === currentTargets.length) {
+      showToast('Perfect! 🍸', 't-done');
+      saveReview(card, true, false);
+      cardDone = true;
+      setTimeout(advanceCard, 900);
+    }
+  } else {
+    totalWrong++;
+    wrongPickedThisCard.push(item);
+    chip.classList.add('flash-wrong');
+    setTimeout(() => { chip.classList.remove('flash-wrong'); chip.classList.add('used'); }, 600);
+    addTrayChip(item, false);
+    document.getElementById('sWrong').textContent = totalWrong;
+    showToast('Wrong — moving on!', 't-wrong');
+    saveReview(card, false, false);
+    cardDone = true;
+    setTimeout(advanceCard, 900);
+  }
+}
+
+function addTrayChip(item, correct) {
+  const tray = document.getElementById('selectedTray');
+  const chip = document.createElement('div');
+  chip.className = 'tray-chip ' + (correct ? 'correct-chip' : 'wrong-chip');
+  chip.textContent = (correct ? '' : '✗ ') + item;
+  tray.appendChild(chip);
+}
+
+function skipCocktail() {
+  if (cardDone) return;
+  saveReview(deck[idx], false, true);
+  cardDone = true;
+  showToast('Skipped', 't-wrong');
+  advanceCard();
+}
+
+function advanceCard() { idx++; loadCard(); }
+
+function saveReview(card, perfect, skipped) {
+  if (reviewData.find(r => r.card.name === card.name)) return;
+  reviewData.push({ card, found: [...foundSoFar], wrongPicked: [...wrongPickedThisCard], skipped, perfect });
+}
+
+function showComplete() {
+  document.getElementById('gameArea').style.display = 'none';
+  document.getElementById('prog').style.width = '100%';
+  document.getElementById('progLabel').textContent = 'Complete!';
+  const total = totalCorrect + totalWrong;
+  const pct = total ? Math.round(totalCorrect / total * 100) : 0;
+  document.getElementById('bigPct').textContent = pct + '%';
+  document.getElementById('completeTitle').textContent = pct >= 90 ? "Shaken & Stirred 🍸" : pct >= 70 ? "Almost There" : "Keep Practicing";
+  document.getElementById('completeMsg').textContent = `${totalCorrect} correct · ${totalWrong} wrong across ${deck.length} cocktails`;
+  document.getElementById('completeScreen').style.display = 'flex';
+}
+
+function showReview() {
+  document.getElementById('completeScreen').style.display = 'none';
+  document.getElementById('reviewSection').style.display = 'block';
+  const container = document.getElementById('reviewCards');
+  container.innerHTML = '';
+
+  reviewData.forEach(r => {
+    const div = document.createElement('div');
+    div.className = 'review-card ' + (r.perfect ? 'perfect' : 'missed');
+    let rows = '';
+    r.card.ingredients.forEach(ingr => {
+      const found = r.found.includes(ingr);
+      rows += `<div class="review-row">
+        <div class="review-dot ${found?'ok':'bad'}"></div>
+        <div>
+          <div class="review-ingr">${ingr}</div>
+          <div class="${found?'review-status-ok':'review-status-bad'}">${found?'Got it':'Missed'}</div>
+        </div>
+      </div>`;
+    });
+    const gFound = r.found.includes(r.card.garnish);
+    rows += `<div class="review-row">
+      <div class="review-dot ${gFound?'ok':'bad'}"></div>
+      <div>
+        <div class="review-ingr">🍋 Garnish: ${r.card.garnish}</div>
+        <div class="${gFound?'review-status-ok':'review-status-bad'}">${gFound?'Got it':'Missed'}</div>
+      </div>
+    </div>`;
+    if (r.wrongPicked.length > 0) {
+      rows += `<div class="review-row">
+        <div class="review-dot bad"></div>
+        <div>
+          <div class="review-ingr" style="color:var(--red)">Wrong picks:</div>
+          <div class="review-wrong-picked">${r.wrongPicked.join(', ')}</div>
+        </div>
+      </div>`;
+    }
+    if (r.skipped) {
+      rows += `<div class="review-row"><div class="review-dot bad"></div><div class="review-ingr" style="color:var(--muted)">Skipped</div></div>`;
+    }
+    div.innerHTML = `<div class="review-cocktail-cat">${r.card.cat}</div><div class="review-cocktail-name">${r.card.name}</div>${rows}`;
+    container.appendChild(div);
   });
 }
 
-function getChip(ingr) {
-  return document.getElementById('chip-' + btoa(encodeURIComponent(ingr)).replace(/=/g,''));
+function backToComplete() {
+  document.getElementById('reviewSection').style.display = 'none';
+  document.getElementById('completeScreen').style.display = 'flex';
 }
 
-function onIngrClick(ingr, chip) {
-  if (chip.classList.contains('used')) return;
-  // Deselect previous
-  document.querySelectorAll('.ingr-chip.selected').forEach(c => c.classList.remove('selected'));
-  if (selectedIngr === ingr) { selectedIngr = null; setInstruction('Select an ingredient to begin'); return; }
-  selectedIngr = ingr;
-  chip.classList.add('selected');
-  setInstruction(`<span>${ingr}</span> — now tap a cocktail`);
-}
-
-function onCocktailClick(cocktailName) {
-  if (!selectedIngr) {
-    setInstruction('Select an ingredient first ↗');
-    return;
-  }
-
-  const correctCocktail = matchMap[selectedIngr];
-  const chip = getChip(selectedIngr);
-
-  if (correctCocktail === cocktailName) {
-    // ✅ Correct
-    const pts = difficulty === 'easy' ? 10 : difficulty === 'medium' ? 15 : 25;
-    score += pts;
-    document.getElementById('scoreNum').textContent = score;
-
-    chip.classList.remove('selected');
-    chip.classList.add('flash-correct');
-    setTimeout(() => chip.classList.add('used'), 300);
-
-    matchedSlots[cocktailName].push(selectedIngr);
-    const matchedEl = document.getElementById('matched-' + cocktailName);
-    matchedEl.textContent = matchedSlots[cocktailName].join(' · ');
-
-    const slot = document.getElementById('slot-' + cocktailName);
-    slot.classList.add('correct');
-    setTimeout(() => slot.classList.remove('correct'), 600);
-
-    showToast(`+${pts} pts · Correct!`, 'correct-toast');
-    wrongStreak = 0;
-    selectedIngr = null;
-    setInstruction('Select an ingredient to begin');
-
-    // Check if all real matches done
-    checkRoundComplete();
-  } else if (!correctCocktail) {
-    // Decoy clicked on a cocktail
-    chip.classList.remove('selected');
-    chip.classList.add('flash-wrong');
-    setTimeout(() => { chip.classList.remove('flash-wrong'); chip.classList.remove('selected'); }, 500);
-    const slot = document.getElementById('slot-' + cocktailName);
-    slot.classList.add('wrong');
-    setTimeout(() => slot.classList.remove('wrong'), 500);
-    score = Math.max(0, score - 3);
-    document.getElementById('scoreNum').textContent = score;
-    showToast('Decoy! -3 pts', 'wrong-toast');
-    selectedIngr = null;
-    setInstruction('That was a decoy! Try again');
-  } else {
-    // Wrong cocktail
-    chip.classList.remove('selected');
-    chip.classList.add('flash-wrong');
-    setTimeout(() => { chip.classList.remove('flash-wrong'); }, 500);
-    const slot = document.getElementById('slot-' + cocktailName);
-    slot.classList.add('wrong');
-    setTimeout(() => slot.classList.remove('wrong'), 500);
-    score = Math.max(0, score - 5);
-    document.getElementById('scoreNum').textContent = score;
-    showToast('Wrong cocktail! -5 pts', 'wrong-toast');
-    selectedIngr = null;
-    setInstruction('Not quite — try a different cocktail');
-  }
-}
-
-function checkRoundComplete() {
-  const totalReal = COCKTAILS_PER_ROUND * INGR_PER_COCKTAIL;
-  const totalMatched = Object.values(matchedSlots).reduce((a, b) => a + b.length, 0);
-  if (totalMatched >= totalReal) {
-    clearInterval(timerInterval);
-    // Bonus for time left
-    const timeBonus = timerVal * (difficulty === 'easy' ? 1 : difficulty === 'medium' ? 2 : 3);
-    score += timeBonus;
-    document.getElementById('scoreNum').textContent = score;
-    showToast(timeBonus > 0 ? `Round Complete! +${timeBonus} time bonus 🍸` : 'Round Complete! 🍸', 'correct-toast');
-    setTimeout(nextRound, 1500);
-  }
-}
-
-function startTimer() {
-  timerVal = timeLimit;
-  updateTimerDisplay();
-  timerInterval = setInterval(() => {
-    timerVal--;
-    updateTimerDisplay();
-    if (timerVal <= 0) {
-      clearInterval(timerInterval);
-      showToast('Time\'s up! Moving on...', 'wrong-toast');
-      setTimeout(nextRound, 1200);
-    }
-  }, 1000);
-}
-
-function updateTimerDisplay() {
-  const el = document.getElementById('timer');
-  el.textContent = timerVal;
-  el.classList.toggle('urgent', timerVal <= 5);
-}
-
-function setInstruction(html) {
-  document.getElementById('instruction').innerHTML = html;
-}
-
-let toastTimeout = null;
+let toastTimer = null;
 function showToast(msg, cls) {
   const t = document.getElementById('toast');
-  clearTimeout(toastTimeout);
-  t.textContent = msg;
-  t.className = 'toast ' + cls + ' show';
-  toastTimeout = setTimeout(() => { t.classList.remove('show'); }, 1800);
+  clearTimeout(toastTimer);
+  t.textContent = msg; t.className = 'toast ' + cls + ' show';
+  toastTimer = setTimeout(() => t.classList.remove('show'), 1800);
 }
 
-function endGame() {
-  clearInterval(timerInterval);
-  document.getElementById('gameArea').style.display = 'none';
-  const screen = document.getElementById('scoreScreen');
-  screen.style.display = 'flex';
-  document.getElementById('bigScore').textContent = score;
-  const maxPossible = ROUNDS_TOTAL * COCKTAILS_PER_ROUND * INGR_PER_COCKTAIL * (difficulty === 'easy' ? 10 : difficulty === 'medium' ? 15 : 25);
-  const pct = Math.round(score / maxPossible * 100);
-  const title = pct >= 80 ? "Bar Ready 🍸" : pct >= 50 ? "Getting There" : "Keep Practicing";
-  document.getElementById('scoreTitle').textContent = title;
-  document.getElementById('scoreMsg').textContent = `You scored ${score} points on ${difficulty} difficulty across ${ROUNDS_TOTAL} rounds.`;
-}
-
-function backToStart() {
-  document.getElementById('scoreScreen').style.display = 'none';
-  document.getElementById('startScreen').style.display = 'flex';
-}
+restart();
 </script>
 </body>
 </html>
