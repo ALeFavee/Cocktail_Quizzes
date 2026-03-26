@@ -1,11 +1,234 @@
 </> HTML 
 
 <!DOCTYPE html>
-<html>
-  <head>
-    <title> Cocktails.M </title>
-  </head>
-  <body> 
-    <h1> Hello world! </h1>
-  </body>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cocktails.M — Mastro's Study Tools</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --gold: #c9a84c;
+  --gold-light: #e8cc7a;
+  --dark: #0d0d0d;
+  --dark2: #161616;
+  --dark3: #1e1e1e;
+  --text: #f0ead8;
+  --muted: #887a60;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  background: var(--dark);
+  color: var(--text);
+  font-family: 'Montserrat', sans-serif;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 20px 60px;
+}
+
+/* subtle grid texture */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(201,168,76,0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(201,168,76,0.03) 1px, transparent 1px);
+  background-size: 40px 40px;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.wrapper {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  max-width: 560px;
+  width: 100%;
+}
+
+/* HEADER */
+.brand {
+  font-size: 10px;
+  letter-spacing: 6px;
+  color: var(--gold);
+  text-transform: uppercase;
+  margin-bottom: 12px;
+  text-align: center;
+}
+
+.logo {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 64px;
+  font-weight: 400;
+  text-align: center;
+  line-height: 1;
+  margin-bottom: 6px;
+  letter-spacing: -1px;
+}
+
+.logo span {
+  color: var(--gold);
+}
+
+.tagline {
+  font-size: 10px;
+  letter-spacing: 3px;
+  color: var(--muted);
+  text-transform: uppercase;
+  text-align: center;
+  margin-bottom: 50px;
+}
+
+/* DIVIDER */
+.divider {
+  width: 60px;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--gold), transparent);
+  margin-bottom: 50px;
+}
+
+/* CARDS */
+.cards {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  width: 100%;
+  margin-bottom: 48px;
+}
+
+.tool-card {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  background: var(--dark2);
+  border: 1px solid rgba(201,168,76,0.15);
+  border-radius: 3px;
+  padding: 22px 24px;
+  text-decoration: none;
+  color: var(--text);
+  transition: border-color 0.2s, background 0.2s, transform 0.2s;
+  cursor: pointer;
+}
+
+.tool-card:hover {
+  border-color: rgba(201,168,76,0.45);
+  background: rgba(201,168,76,0.05);
+  transform: translateX(4px);
+}
+
+.tool-icon {
+  font-size: 28px;
+  min-width: 40px;
+  text-align: center;
+  line-height: 1;
+}
+
+.tool-info {
+  flex: 1;
+}
+
+.tool-label {
+  font-size: 8px;
+  letter-spacing: 3px;
+  color: var(--gold);
+  text-transform: uppercase;
+  margin-bottom: 5px;
+}
+
+.tool-name {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 22px;
+  font-weight: 600;
+  margin-bottom: 4px;
+  line-height: 1.2;
+}
+
+.tool-desc {
+  font-size: 11px;
+  color: var(--muted);
+  line-height: 1.6;
+  letter-spacing: 0.3px;
+}
+
+.tool-arrow {
+  font-size: 16px;
+  color: var(--gold);
+  opacity: 0.5;
+  transition: opacity 0.2s, transform 0.2s;
+}
+
+.tool-card:hover .tool-arrow {
+  opacity: 1;
+  transform: translateX(4px);
+}
+
+/* FOOTER */
+.footer {
+  font-size: 9px;
+  letter-spacing: 2.5px;
+  color: var(--muted);
+  text-transform: uppercase;
+  text-align: center;
+  opacity: 0.6;
+}
+</style>
+</head>
+<body>
+
+<div class="wrapper">
+
+  <div class="brand">Mastro's Restaurants · 2026</div>
+
+  <div class="logo">Cocktails<span>.</span>M</div>
+  <div class="tagline">Staff Training · Study Tools</div>
+
+  <div class="divider"></div>
+
+  <div class="cards">
+
+    <a class="tool-card" href="quiz.html">
+      <div class="tool-icon">🧠</div>
+      <div class="tool-info">
+        <div class="tool-label">Study Tool 01</div>
+        <div class="tool-name">Multiple Choice Quiz</div>
+        <div class="tool-desc">Test your knowledge on ingredients, glassware, garnishes & build methods. Filter by spirit category.</div>
+      </div>
+      <div class="tool-arrow">→</div>
+    </a>
+
+    <a class="tool-card" href="flashcards.html">
+      <div class="tool-icon">🃏</div>
+      <div class="tool-info">
+        <div class="tool-label">Study Tool 02</div>
+        <div class="tool-name">Flashcards</div>
+        <div class="tool-desc">Flip through every cocktail recipe. Mark what you know and drill the ones you don't.</div>
+      </div>
+      <div class="tool-arrow">→</div>
+    </a>
+
+    <a class="tool-card" href="game.html">
+      <div class="tool-icon">🎮</div>
+      <div class="tool-info">
+        <div class="tool-label">Study Tool 03</div>
+        <div class="tool-name">Ingredient Match</div>
+        <div class="tool-desc">Race the clock to match ingredients to the right cocktail. Watch out for decoys.</div>
+      </div>
+      <div class="tool-arrow">→</div>
+    </a>
+
+  </div>
+
+  <div class="footer">Cocktails.M · Internal Use Only</div>
+
+</div>
+
+</body>
 </html>
