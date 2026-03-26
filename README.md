@@ -1,1 +1,1 @@
-Study Guide for cocktail quizes I made, enjoy :3
+Cocktail menu study quide, enjoy :3 
